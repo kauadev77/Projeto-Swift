@@ -1,0 +1,58 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Projeto-Swift}",
+            "name": "Debug Aula_1",
+            "program": "${workspaceFolder:Projeto-Swift}/.build/debug/Aula_1",
+            "preLaunchTask": "swift: Build Debug Aula_1"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Projeto-Swift}",
+            "name": "Release Aula_1",
+            "program": "${workspaceFolder:Projeto-Swift}/.build/release/Aula_1",
+            "preLaunchTask": "swift: Build Release Aula_1"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Projeto-Swift}",
+            "name": "Debug P",
+            "program": "${workspaceFolder:Projeto-Swift}/.build/debug/P",
+            "preLaunchTask": "swift: Build Debug P"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Projeto-Swift}",
+            "name": "Release P",
+            "program": "${workspaceFolder:Projeto-Swift}/.build/release/P",
+            "preLaunchTask": "swift: Build Release P"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Projeto-Swift}",
+            "name": "Debug Projeto",
+            "program": "${workspaceFolder:Projeto-Swift}/.build/debug/Projeto",
+            "preLaunchTask": "swift: Build Debug Projeto"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Projeto-Swift}",
+            "name": "Release Projeto",
+            "program": "${workspaceFolder:Projeto-Swift}/.build/release/Projeto",
+            "preLaunchTask": "swift: Build Release Projeto"
+        }
+    ]
+}
