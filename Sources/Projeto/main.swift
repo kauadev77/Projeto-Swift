@@ -89,3 +89,88 @@ class PlanoAnual: Plano {
         return (1440 * 0.8) / 12
     }
 }
+
+//--------- DIA 2------------//
+
+// ---- Pt1 ----
+
+protocol Manutencao {
+    var nomeItem: String { get }
+    var dataUltimaManutencao: String { get }
+
+    func realizarManutencao() -> Bool
+}
+// ---- Pt2 ----
+class Aparelho: Manutencao {
+    var nomeItem: String
+    private(set) var dataUltimaManutencao: String
+    
+    init(nomeItem: String) {
+    self.nomeItem = nomeItem
+    self.dataUltimaManutencao = "Nenhuma"
+}
+
+    func realizarManutencao() -> Bool {
+        print("realizando manutenção...")
+        dataUltimaManutencao = "20/08/2025"
+        print("manutenção realizada. Ultima verificação em : \(dataUltimaManutencao)")
+        return true
+    }
+}
+// ---- Pt3 ----
+
+class Aula {
+    var nome: String
+    var instrutor: Instrutor
+
+    init(nome: String, instrutor: Instrutor) {
+        self.nome = nome
+        self.instrutor = instrutor
+    }
+
+    func getDescricao() -> String {
+        return "Aula: \(nome), Instrutor: \(instrutor.nome)"
+    }
+}
+
+class AulaPersonal: Aula {
+    var aluno: Aluno
+
+    init(nome: String, instrutor: Instrutor, aluno: Aluno) {
+        self.aluno = aluno
+        super.init(nome: nome, instrutor: instrutor)
+    }
+
+    override func getDescricao() -> String {
+        return "Aula Particular: \(nome), Instrutor: \(instrutor.nome), Aluno: \(aluno.nome)"
+    }
+}
+
+class AulaColetiva: Aula {
+    var capacidadeMaxima: Int = 25
+    private(set) var alunosInscritos: [String: Aluno] = [:]
+
+    override init(nome: String, instrutor: Instrutor) {
+        super.init(nome: nome, instrutor: instrutor)
+    }
+
+    func inscrever(aluno: Aluno) -> Bool {
+        if alunosInscritos.count >= capacidadeMaxima {
+            print("❌ Aula cheia! Capacidade máxima de \(capacidadeMaxima) atingida.")
+            return false
+        }
+
+        if alunosInscritos[aluno.nome] != nil {
+            print("⚠️ Aluno \(aluno.nome) já está inscrito.")
+            return false
+        }
+
+        alunosInscritos[aluno.nome] = aluno
+        print("✅ Aluno \(aluno.nome) inscrito com sucesso na aula \(nome).")
+        return true
+    }
+
+    override func getDescricao() -> String {
+        return "Aula Coletiva: \(nome), Instrutor: \(instrutor.nome), Vagas ocupadas: \(alunosInscritos.count)/\(capacidadeMaxima)"
+    }
+}
