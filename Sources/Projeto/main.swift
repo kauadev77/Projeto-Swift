@@ -147,10 +147,11 @@ class AulaPersonal: Aula {
 }
 
 class AulaColetiva: Aula {
-    var capacidadeMaxima: Int = 25
+    var capacidadeMaxima: Int
     private(set) var alunosInscritos: [String: Aluno] = [:]
 
-    override init(nome: String, instrutor: Instrutor) {
+    override init(nome: String, instrutor: Instrutor, capacidadeMaxima: capacidadeMaxima) {
+        self.capacidadeMaxima = 25
         super.init(nome: nome, instrutor: instrutor)
     }
 
@@ -172,5 +173,80 @@ class AulaColetiva: Aula {
 
     override func getDescricao() -> String {
         return "Aula Coletiva: \(nome), Instrutor: \(instrutor.nome), Vagas ocupadas: \(alunosInscritos.count)/\(capacidadeMaxima)"
+    }
+}
+
+
+//--------- DIA 3------------//
+
+
+class Academia{
+    let nome: String
+    private(set) var alunosMatriculados: [String: Aluno] = [:]
+    private(set) var instrutoresContratados: [String: Instrutor] = [:]
+    private(set) var aparelhos: [Aparelho] = []
+    private(set) var aulasDisponiveis: [Aula] = []
+
+
+    init(nome: String){
+        self.nome = nome
+    }
+
+    func adicionarAparelho(_ aparelho: Aparelho){
+        aparelhos.append(aparelho)
+    }
+
+    func adicionarAula(_ aula: Aula){
+        aulasDisponiveis.append(aula)
+    }
+
+    func adicionarInstrutor(_ instrutor: Instrutor){
+        instrutoresContratados.append(instrutor)
+    }
+// 1º método
+    func matricularAluno(_ aluno: Aluno){
+        if alunosMatriculados[aluno.matricula] != nil {
+            print("Erro: Aluno com matrícula \(aluno.matricula) já existe.")
+        } else {
+            alunosMatriculados[aluno.matricula] = aluno
+            print("Sucesso: Aluno \(aluno.nome) matriculado.")
+        }
+    }
+        
+// 2º metodo
+    func matricularAluno(nome: String, email: String, matricula: String, plano: Plano) -> novoAluno{
+        let novoAluno = Aluno(nome: nome, email: email, matricula: matricula, plano: plano)
+        matricularAluno(novoAluno)
+        return novoAluno
+    }
+
+
+    func buscarAluno(porMatricula matricula: String) -> Aluno?{
+        return alunosMatriculados[matricula]
+    }
+
+    func listarAlunos() {
+        print("--- Lista de Alunos Matriculados ---")
+        let lista = alunosMatriculados.values.sorted { $0.nome < $1.nome }
+        if lista.isEmpty {
+            print("Nenhum aluno matriculado.")
+        } else {
+            for aluno in lista {
+                print(aluno.getDescricao())
+            }
+        }
+        print("------------------------------------")
+    }
+
+    func listarAulas() {
+        print("--- Lista de Aulas Disponíveis ---")
+        if aulasDisponiveis.isEmpty {
+            print("Nenhuma aula cadastrada.")
+        } else {
+            for aula in aulasDisponiveis {
+                print(aula.getDescricao())
+            }
+        }
+        print("----------------------------------")
     }
 }
