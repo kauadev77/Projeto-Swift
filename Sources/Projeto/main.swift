@@ -1,252 +1,55 @@
-import Foundation 
+let academia = Academia(nome: "Academia POO 360")
 
-// ---------------------------
-// Parte 1 - Pessoas
-// ---------------------------
+let planoMensal = PlanoMensal()
+let planoAnual = PlanoAnual()
 
-class Pessoa {
-    var nome: String
-    var email: String
+let instrutor1 = Instrutor(nome: "Luiz Augusto", email: "augusto@acadpoo.com", especialidade: "Musculação")
+let instrutor2 = Instrutor(nome: "Kauã de Jesus", email: "kaua@acadpoo.com", especialidade: "Boxe")
+academia.adicionarInstrutor(instrutor1)
+academia.adicionarInstrutor(instrutor2)
 
-    init(nome: String, email: String) {
-        self.nome = nome
-        self.email = email
-    }
+let aluno1 = academia.matricularAluno(nome: "Manuel Gomes", email: "canetazul@gmail.com", matricula: "A001", plano: planoMensal)
+let aluno2 = academia.matricularAluno(nome: "Lebron James da Silva", email: "goatnba@gmail.com", matricula: "A002", plano: planoAnual)
 
-    func getDescricao() -> String {
-        return "Seu nome: \(nome), e Email: \(email)"
+let aulaPersonal = AulaPersonal(nome: "Treino de Hipertrofia", instrutor: instrutor1, aluno: aluno1)
+let aulaColetiva = AulaColetiva(nome: "Boxe em Grupo", instrutor: instrutor2, capacidadeMaxima: 3)
+academia.adicionarAula(aulaPersonal)
+academia.adicionarAula(aulaColetiva)
+
+_ = aulaColetiva.inscrever(aluno: aluno1)
+_ = aulaColetiva.inscrever(aluno: aluno2)
+
+let aluno3 = academia.matricularAluno(nome: "Carl Johnson", email: "cjay@gmail.com", matricula: "A003", plano: planoMensal)
+_ = aulaColetiva.inscrever(aluno: aluno3)
+
+let aluno4 = academia.matricularAluno(nome: "Davy Jones", email: "ondascerebrais@gmail.com", matricula: "A004", plano: planoMensal)
+_ = aulaColetiva.inscrever(aluno: aluno4)
+
+academia.listarAulas()
+academia.listarAlunos()
+
+let aulas: [Aula] = [aulaPersonal, aulaColetiva]
+for aula in aulas {
+    print(aula.getDescricao())
+}
+
+let pessoas: [Pessoa] = [aluno1, instrutor1]
+for pessoa in pessoas {
+    print(pessoa.getDescricao())
+}
+
+extension Academia {
+    func gerarRelatorio() -> (totalAlunos: Int, totalInstrutores: Int, totalAulas: Int) {
+        return (
+            totalAlunos: alunosMatriculados.count,
+            totalInstrutores: instrutoresContratados.count,
+            totalAulas: aulasDisponiveis.count
+        )
     }
 }
 
-enum NivelAluno {
-    case iniciante
-    case intermediario
-    case avancado
-}
-
-class Aluno: Pessoa {
-    var matricula: String
-    var nivel: NivelAluno = .iniciante   // valor padrão
-    private(set) var plano: Plano        // restrito para alteração
-
-    init(nome: String, email: String, matricula: String, plano: Plano) {
-        self.matricula = matricula
-        self.plano = plano
-        super.init(nome: nome, email: email)
-    }
-
-    override func getDescricao() -> String {
-        return super.getDescricao() +
-               ", Matrícula: \(matricula), Nível: \(nivel), Plano: \(plano.nome) - Mensalidade: R$ \(plano.calcularMensalidade())"
-    }
-}
-
-class Instrutor: Pessoa {
-    var especialidade: String
-
-    init(nome: String, email: String, especialidade: String) {
-        self.especialidade = especialidade
-        super.init(nome: nome, email: email)
-    }
-
-    override func getDescricao() -> String {
-        return super.getDescricao() + ", Especialidade: \(especialidade)"
-    }
-}
-
-// ---------------------------
-// Parte 2 - Planos
-// ---------------------------
-
-class Plano {
-    private(set) var nome: String
-    
-    init(nome: String) {
-        self.nome = nome
-    }
-
-    func calcularMensalidade() -> Double {
-        return 0.0
-    }
-}    
-
-class PlanoMensal: Plano {
-    override init(nome: String = "Plano Mensal") {
-        super.init(nome: nome)
-    }
-
-    override func calcularMensalidade() -> Double {
-        return 120.0
-    }
-}
-
-class PlanoAnual: Plano {
-    override init(nome: String = "Plano Anual (Promocional)") {
-        super.init(nome: nome)
-    }
-
-    override func calcularMensalidade() -> Double {
-        return (1440 * 0.8) / 12
-    }
-}
-
-//--------- DIA 2------------//
-
-// ---- Pt1 ----
-
-protocol Manutencao {
-    var nomeItem: String { get }
-    var dataUltimaManutencao: String { get }
-
-    func realizarManutencao() -> Bool
-}
-// ---- Pt2 ----
-class Aparelho: Manutencao {
-    var nomeItem: String
-    private(set) var dataUltimaManutencao: String
-    
-    init(nomeItem: String) {
-    self.nomeItem = nomeItem
-    self.dataUltimaManutencao = "Nenhuma"
-}
-
-    func realizarManutencao() -> Bool {
-        print("realizando manutenção...")
-        dataUltimaManutencao = "20/08/2025"
-        print("manutenção realizada. Ultima verificação em : \(dataUltimaManutencao)")
-        return true
-    }
-}
-// ---- Pt3 ----
-
-class Aula {
-    var nome: String
-    var instrutor: Instrutor
-
-    init(nome: String, instrutor: Instrutor) {
-        self.nome = nome
-        self.instrutor = instrutor
-    }
-
-    func getDescricao() -> String {
-        return "Aula: \(nome), Instrutor: \(instrutor.nome)"
-    }
-}
-
-class AulaPersonal: Aula {
-    var aluno: Aluno
-
-    init(nome: String, instrutor: Instrutor, aluno: Aluno) {
-        self.aluno = aluno
-        super.init(nome: nome, instrutor: instrutor)
-    }
-
-    override func getDescricao() -> String {
-        return "Aula Particular: \(nome), Instrutor: \(instrutor.nome), Aluno: \(aluno.nome)"
-    }
-}
-
-class AulaColetiva: Aula {
-    var capacidadeMaxima: Int
-    private(set) var alunosInscritos: [String: Aluno] = [:]
-
-    override init(nome: String, instrutor: Instrutor, capacidadeMaxima: capacidadeMaxima) {
-        self.capacidadeMaxima = 25
-        super.init(nome: nome, instrutor: instrutor)
-    }
-
-    func inscrever(aluno: Aluno) -> Bool {
-        if alunosInscritos.count >= capacidadeMaxima {
-            print("❌ Aula cheia! Capacidade máxima de \(capacidadeMaxima) atingida.")
-            return false
-        }
-
-        if alunosInscritos[aluno.nome] != nil {
-            print("⚠️ Aluno \(aluno.nome) já está inscrito.")
-            return false
-        }
-
-        alunosInscritos[aluno.nome] = aluno
-        print("✅ Aluno \(aluno.nome) inscrito com sucesso na aula \(nome).")
-        return true
-    }
-
-    override func getDescricao() -> String {
-        return "Aula Coletiva: \(nome), Instrutor: \(instrutor.nome), Vagas ocupadas: \(alunosInscritos.count)/\(capacidadeMaxima)"
-    }
-}
-
-
-//--------- DIA 3------------//
-
-
-class Academia{
-    let nome: String
-    private(set) var alunosMatriculados: [String: Aluno] = [:]
-    private(set) var instrutoresContratados: [String: Instrutor] = [:]
-    private(set) var aparelhos: [Aparelho] = []
-    private(set) var aulasDisponiveis: [Aula] = []
-
-
-    init(nome: String){
-        self.nome = nome
-    }
-
-    func adicionarAparelho(_ aparelho: Aparelho){
-        aparelhos.append(aparelho)
-    }
-
-    func adicionarAula(_ aula: Aula){
-        aulasDisponiveis.append(aula)
-    }
-
-    func adicionarInstrutor(_ instrutor: Instrutor){
-        instrutoresContratados.append(instrutor)
-    }
-// 1º método
-    func matricularAluno(_ aluno: Aluno){
-        if alunosMatriculados[aluno.matricula] != nil {
-            print("Erro: Aluno com matrícula \(aluno.matricula) já existe.")
-        } else {
-            alunosMatriculados[aluno.matricula] = aluno
-            print("Sucesso: Aluno \(aluno.nome) matriculado.")
-        }
-    }
-        
-// 2º metodo
-    func matricularAluno(nome: String, email: String, matricula: String, plano: Plano) -> novoAluno{
-        let novoAluno = Aluno(nome: nome, email: email, matricula: matricula, plano: plano)
-        matricularAluno(novoAluno)
-        return novoAluno
-    }
-
-
-    func buscarAluno(porMatricula matricula: String) -> Aluno?{
-        return alunosMatriculados[matricula]
-    }
-
-    func listarAlunos() {
-        print("--- Lista de Alunos Matriculados ---")
-        let lista = alunosMatriculados.values.sorted { $0.nome < $1.nome }
-        if lista.isEmpty {
-            print("Nenhum aluno matriculado.")
-        } else {
-            for aluno in lista {
-                print(aluno.getDescricao())
-            }
-        }
-        print("------------------------------------")
-    }
-
-    func listarAulas() {
-        print("--- Lista de Aulas Disponíveis ---")
-        if aulasDisponiveis.isEmpty {
-            print("Nenhuma aula cadastrada.")
-        } else {
-            for aula in aulasDisponiveis {
-                print(aula.getDescricao())
-            }
-        }
-        print("----------------------------------")
-    }
-}
+let relatorio = academia.gerarRelatorio()
+print("Relatório da Academia:")
+print("Total de Alunos: \(relatorio.totalAlunos)")
+print("Total de Instrutores: \(relatorio.totalInstrutores)")
+print("Total de Aulas: \(relatorio.totalAulas)")
