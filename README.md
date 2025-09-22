@@ -47,6 +47,5 @@ Projeto-Swift/
 
 - 💾 Persistência de dados em arquivos ou banco de dados  
 - ⚠️ Tratamento de erros mais detalhado  
-- 🌍 Internacionalização (suporte a múltiplos idiomas)  
 - 🖥️ Criação de interface mais amigável (CLI avançada ou GUI)  
 - 📝 Documentação adicional diretamente no código  
